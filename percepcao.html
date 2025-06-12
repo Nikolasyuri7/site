@@ -6,6 +6,7 @@
   <title>Percepção Musical | Nikolas Yuri</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <header>
@@ -34,8 +35,8 @@
           <button onclick="startGame()" class="button">Iniciar</button>
           <button onclick="playChord()" id="repeat-btn" style="display:none;" class="button">Repetir Acorde</button>
           <div id="choices" style="margin-top: 20px; display: none;">
-            <button onclick="checkAnswer('maior')" class="button">Maior</button>
-            <button onclick="checkAnswer('menor')" class="button">Menor</button>
+            <button onclick="checkAnswer('maior')" class="button"><i class="fas fa-arrow-up"></i> Maior</button>
+            <button onclick="checkAnswer('menor')" class="button"><i class="fas fa-arrow-down"></i> Menor</button>
             <button onclick="checkAnswer('diminuto')" id="dimBtn" class="button" style="display: none;">Diminuto</button>
             <button onclick="checkAnswer('aumentado')" id="aumBtn" class="button" style="display: none;">Aumentado</button>
             <button onclick="checkAnswer('7')" id="setimaBtn" class="button" style="display: none;">7ª Menor</button>
