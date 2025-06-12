@@ -259,3 +259,24 @@ img {
   height: auto;
   display: block;
 }
+
+/* Responsividade para telas menores */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .menu {
+    margin-top: 10px;
+  }
+  .hero {
+    padding: 40px 10px;
+  }
+  .cta-box {
+    padding: 20px;
+  }
+  .cta-box h1 {
+    font-size: 22px;
+  }
+}
