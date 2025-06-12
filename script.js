@@ -1,5 +1,7 @@
 const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const context = new (window.AudioContext || window.webkitAudioContext)();
+let piano = null;
+Soundfont.instrument(context, 'acoustic_grand_piano', { soundfont: 'MusyngKite' }).then(p => piano = p);
 let currentChord = null, score = 0, round = 0, startTime, currentLevel = 'facil', activeSources = [];
 
 function noteToFrequency(note) {
@@ -11,7 +13,12 @@ function noteToFrequency(note) {
   return noteFreqMap[note];
 }
 
-function playFrequency(freq) {
+function playNote(name) {
+  if (piano) {
+    const node = piano.play(name + '4', context.currentTime, { gain: 0.5, duration: 2 });
+    return { stop: (when) => node.stop(when) };
+  }
+  const freq = noteToFrequency(name);
   const osc = context.createOscillator();
   const gain = context.createGain();
   osc.type = 'sine';
@@ -21,7 +28,7 @@ function playFrequency(freq) {
   gain.connect(context.destination);
   osc.start();
   osc.stop(context.currentTime + 2);
-  return { osc, gain };
+  return { stop: (when) => osc.stop(when), osc, gain };
 }
 
 function playChord() {
@@ -39,17 +46,20 @@ function playChord() {
   activeSources = [];
   for (let i of intervals) {
     const noteName = notes[(rootIndex + i) % notes.length];
-    const freq = noteToFrequency(noteName);
-    const src = playFrequency(freq);
+    const src = playNote(noteName);
     activeSources.push(src);
   }
   document.getElementById('repeat-btn').style.display = 'inline-block';
 }
 
 function stopChord() {
-  activeSources.forEach(({ osc, gain }) => {
-    gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.2);
-    osc.stop(context.currentTime + 0.2);
+  activeSources.forEach(src => {
+    if (src.stop) {
+      src.stop(context.currentTime + 0.2);
+    } else if (src.osc && src.gain) {
+      src.gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 0.2);
+      src.osc.stop(context.currentTime + 0.2);
+    }
   });
   activeSources = [];
 }
