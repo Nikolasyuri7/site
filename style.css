@@ -99,6 +99,10 @@ main {
   margin: 8px;
 }
 
+.button .icon {
+  margin-right: 6px;
+}
+
 .button:hover,
 .cta-box button:hover,
 #result button:hover {
